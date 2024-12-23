@@ -1,0 +1,44 @@
+timezone: 'Asia/Ho_Chi_Minh'
+cost: 20 # * days
+ 
+rewards:
+ normal:
+  - item: "diamond:0:16"
+    name: "Vien Thuoc Kim Cuong"
+    lore:
+     - "bro are u sure use it?"
+    enchantments:
+     - name: unbreaking
+       level: 1
+  - item: "diamond_block:0:10"
+    name: "vien thuoc kim cuong pro max"
+    lore:
+     - "bro are u sure use it?"
+    enchantments:
+     - name: unbreaking
+       level: 1
+    commands:
+    - givemoney {player} 100
+  - item: "gold_block:0:12"
+    name: "Vang 24k"
+    lore:
+     - "bro are u sure use it?"
+    enchantments:
+    - name: unbreaking
+      level: 1
+  - item: "stone:0:5"
+    name: "Ma Toe"
+    lore:
+     - "bro are u sure use it?"
+    enchantments:
+     - name: unbreaking
+       level: 1
+ vip:
+  1:
+   - item: "1:0:1"
+     name: "Lmao testing"
+   - item: "iron_ingot:0:3"
+   - item: "gold_ingot:0:2"
+  3:
+   - item: "4:0:2"
+   - item: "7:0:3"
