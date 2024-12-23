@@ -1,0 +1,10 @@
+name: DiemDanhGUI
+api: 5.0.0
+version: 2.0.0
+main: ClickedTran\DiemDanh\DiemDanhGUI
+author: ClickedTran
+depends: ["EconomyAPI"]
+
+permissions:
+ diemdanh.command:
+  default: true
