@@ -73,10 +73,18 @@ class GUIManager{
         $checkin = $item->getNamedTag()->getString("checkin_day");
         if(!in_array($checkin, $day)){
           $lastLogin = $manager->getPlayerLastLogin($player);
-          if($lastLogin === "" || strtotime($checkin) - strtotime($lastLogin) > 86400){
+          if($lastLogin === ""){
             $manager->setPlayerLoginStreak($player, 1);
           }else{
-            $manager->updatePlayerLoginStreak($player);
+            $newDate = \DateTime($checkin);
+            $newLast = \DateTime($lastLogin);
+            if($newLast->format("Y-m") !== $newDate->format("Y-m")){
+              $manager->setPlayerLoginStreak($player, 1);
+            }elseif($newDate->getTimestamp() - $newLast->getTimestamp() > 86400){
+              $manager->setPlayerLoginStreak($player, 1);
+            }else{
+              $manager->updatePlayerLoginStreak($player);
+            }
           }
           $day[] = $checkin;
           $updateLastLogin = $checkin;
