@@ -18,6 +18,8 @@ use muqsit\invmenu\transaction\{
 use onebone\economyapi\EconomyAPI;
 use ClickedTran\DiemDanh\DiemDanhGUI;
 
+use DateTime;
+
 class GUIManager{
   
   public function openMenu(Player $player) : void{
@@ -76,12 +78,16 @@ class GUIManager{
           if($lastLogin === ""){
             $manager->setPlayerLoginStreak($player, 1);
           }else{
-            $newDate = \DateTime($checkin);
-            $newLast = \DateTime($lastLogin);
+            $newDate = new DateTime($checkin);
+            $newLast = new DateTime($lastLogin);
             if($newLast->format("Y-m") !== $newDate->format("Y-m")){
               $manager->setPlayerLoginStreak($player, 1);
+              $manager->getDataPlayer($player)->set("last_login", "");
+              $day = [];
             }elseif($newDate->getTimestamp() - $newLast->getTimestamp() > 86400){
               $manager->setPlayerLoginStreak($player, 1);
+              $manager->getDataPlayer($player)->set("last_login", "");
+              $day = [];
             }else{
               $manager->updatePlayerLoginStreak($player);
             }
