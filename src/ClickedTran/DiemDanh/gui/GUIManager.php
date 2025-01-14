@@ -48,22 +48,22 @@ class GUIManager{
     foreach($dayInMonth as $days){
       $item = StringToItemParser::getInstance()->parse("chest_minecart");
       
-      $item->setCustomName("§aNgày§b ".$days);
+      $item->setCustomName("§aDay§b ".$days);
       if(in_array("$currentMonth-$days", $checkedDay)){
         $item = StringToItemParser::getInstance()->parse("hopper_minecart");
        // $item->addEnchantment(new EnchantmentInstance(EnchantmentIdMap::getInstance()->fromId(DiemDanhGUI::FAKE_ENCHANTMENT)));
-        $item->setCustomName("§aNgày§b ".$days);
-        $item->setLore(["§bĐÃ ĐIỂM DANH"]);
+        $item->setCustomName("§aDay§b ".$days);
+        $item->setLore(["§bAttendance has been taken"]);
         $item->getNamedTag()->setString("has_complete", "$currentMonth-$days");
       }elseif($days > $currentDay){
-        $item->setCustomName("§aNgày§b ".$days." §4( §9Không thể điểm danh§4 )");
-        $item->setLore(["§bCHƯA TỚI NGÀY"]);
+        $item->setCustomName("§aDay§b ".$days." §4( §9Unable to take attendance§4 )");
+        $item->setLore(["§bTHE DAY IS NOT YET"]);
         $item->getNamedTag()->setString("next_day", "$currentMonth-$days");
       }elseif($days < $currentDay){
-        $item->setLore(["§bĐã quá hạn điểm danh", "§bBấm để điểm danh lại", "§bPhí điểm danh bù: §c".$cfg->get("cost") * $days]);
+        $item->setLore(["§bAttendance deadline has passed", "§bClick to retake attendance", "§bCompensatory attendance fee:: §c".$cfg->get("cost") * $days]);
         $item->getNamedTag()->setString("missed_day", "$currentMonth-$days");
       }else{
-        $item->setLore(["§bBấm để điểm danh"]);
+        $item->setLore(["§bClick to take attendance"]);
         $item->getNamedTag()->setString("checkin_day", "$currentMonth-$days");
       }
       $inv->setItem($days - 1, $item);
@@ -99,7 +99,7 @@ class GUIManager{
           $manager->updatePlayerLastLogin($player, $updateLastLogin);
           $manager->randomReward($player);
           $manager->randomStreakReward($player, $streak);
-            $player->sendMessage("§aBạn đã điểm danh liên tiếp §b".$streak." §angày, phần quà đã gửi về túi đồ!");
+            $player->sendMessage("§aYou have taken consecutive roll calls §b".$streak." §aday, the gift was sent to the bag!");
           $player->removeCurrentWindow();
         }
         return $transaction->discard();
@@ -108,7 +108,7 @@ class GUIManager{
       if($item->getNamedTag()->getTag("has_complete") !== null){
         $hasComplete = $item->getNamedTag()->getString("has_complete");
         if(in_array($hasComplete, $day)){
-          $player->sendMessage("§aBạn đã điểm danh hôm nay rồi!");
+          $player->sendMessage("§aYou have taken attendance today!");
           $player->removeCurrentWindow();
         }
         return $transaction->discard();
@@ -117,19 +117,19 @@ class GUIManager{
       if($item->getNamedTag()->getTag("missed_day") !== null){
         $missedDay = $item->getNamedTag()->getString("missed_day");
         if(in_array($missedDay, $day)){
-          $player->sendMessage("§aBạn đã điểm danh ngày này rồi!");
+          $player->sendMessage("§aYou have already taken attendance this day!");
           $player->removeCurrentWindow();
         }else{
           $day[] = $missedDay;
           $cost = $manager->getCFG()->get("cost") * explode(" ", $item->getCustomName())[1];
           if(EconomyAPI::getInstance()->myMoney($player) < $cost){
-            $player->sendMessage("Bro khong du tien de diem danh bu");
+            $player->sendMessage("§cYou don't have enough money to make up attendance");
             $player->removeCurrentWindow();
           }else{
             EconomyAPI::getInstance()->reduceMoney($player, $cost);
             $manager->setPlayerLoginDay($player, $day);
             $manager->randomReward($player);
-          $player->sendMessage("§aBạn đã điểm danh bù thành công, phần quà đã gửi về túi đồ!");
+          $player->sendMessage("§aYou have successfully made up for roll call and the gift has been sent to your inventory!");
             $player->removeCurrentWindow();
           }
         }
@@ -139,7 +139,7 @@ class GUIManager{
       if($item->getNamedTag()->getTag("next_day") !== null){
         $nextDay= $item->getNamedTag()->getString("next_day");
         if(strtotime($nextDay) > strtotime($currentDate)){
-          $player->sendMessage("Ban khong the diem danh truoc ngay duoc");
+          $player->sendMessage("§cYou cannot take attendance before the day");
           $player->removeCurrentWindow();
         }
         return $transaction->discard();
