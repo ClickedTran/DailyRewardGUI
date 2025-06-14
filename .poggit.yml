@@ -6,6 +6,6 @@ projects:
   DailyRewardGUI:
     path: ""
     libs:
-     - src: muqsit\invmenu\InvMenu
+     - src: muqsit/invmenu/InvMenu
        version: ^3.0.0
 ...
