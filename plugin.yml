@@ -1,6 +1,6 @@
 name: DiemDanhGUI
-api: 5.0.0
-version: 2.0.0
+api: 5.21.0
+version: 1.0.0
 main: ClickedTran\DiemDanh\DiemDanhGUI
 author: ClickedTran
 depends: ["EconomyAPI"]
